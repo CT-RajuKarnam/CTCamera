@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="horizontal"
+    android:padding="10sp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_picture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/black"
+        android:layout_toEndOf="@id/iv_picture"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/llModify"
+        tools:text="Image Name" />
+
+    <ImageView
+        android:id="@+id/imgCapture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:src="@drawable/gallery_selector" />
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llModify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="end"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgEdit"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="10dp"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/icon_edit" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgDelete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="4dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/icon_delete" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>

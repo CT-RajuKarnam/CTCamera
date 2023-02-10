@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">MultiCameraLibrary</string>
+
+
+    <string name="cameraview_default_autofocus_marker">com.ct.camera.markers.DefaultAutoFocusMarker</string>
+
+    <string name="cameraview_filter_none">com.ct.camera.filter.NoFilter</string>
+    <string name="cameraview_filter_autofix">com.ct.camera.filters.AutoFixFilter</string>
+    <string name="cameraview_filter_black_and_white">com.ct.camera.filters.BlackAndWhiteFilter</string>
+    <string name="cameraview_filter_brightness">com.ct.camera.filters.BrightnessFilter</string>
+    <string name="cameraview_filter_contrast">com.ct.camera.filters.ContrastFilter</string>
+    <string name="cameraview_filter_cross_process">com.ct.camera.filters.CrossProcessFilter</string>
+    <string name="cameraview_filter_documentary">com.ct.camera.filters.DocumentaryFilter</string>
+    <string name="cameraview_filter_duotone">com.ct.camera.filters.DuotoneFilter</string>
+    <string name="cameraview_filter_fill_light">com.ct.camera.filters.FillLightFilter</string>
+    <string name="cameraview_filter_gamma">com.ct.camera.filters.GammaFilter</string>
+    <string name="cameraview_filter_grain">com.ct.camera.filters.GrainFilter</string>
+    <string name="cameraview_filter_grayscale">com.ct.camera.filters.GrayscaleFilter</string>
+    <string name="cameraview_filter_hue">com.ct.camera.filters.HueFilter</string>
+    <string name="cameraview_filter_invert_colors">com.ct.camera.filters.InvertColorsFilter</string>
+    <string name="cameraview_filter_lomoish">com.ct.camera.filters.LomoishFilter</string>
+    <string name="cameraview_filter_posterize">com.ct.camera.filters.PosterizeFilter</string>
+    <string name="cameraview_filter_saturation">com.ct.camera.filters.SaturationFilter</string>
+    <string name="cameraview_filter_sepia">com.ct.camera.filters.SepiaFilter</string>
+    <string name="cameraview_filter_sharpness">com.ct.camera.filters.SharpnessFilter</string>
+    <string name="cameraview_filter_temperature">com.ct.camera.filters.TemperatureFilter</string>
+    <string name="cameraview_filter_tint">com.ct.camera.filters.TintFilter</string>
+    <string name="cameraview_filter_vignette">com.ct.camera.filters.VignetteFilter</string>
+    <string name="txt_watermark">Watermark</string>
+    <string name="txt_description">Text Overlay</string>
+    <string name="txt_Label">Image Label</string>
+    <string name="txt_helper">Helper Overlay Image</string>
+    <string name="txt_address">Address</string>
+    <string name="txt_latitude_amp_longitude">Location Tags</string>
+    <string name="txt_time">Time Stamp</string>
+    <string name="txt_guide_box">Guide Box</string>
+    <string name="txt_apply">Apply</string>
+    <string name="txt_full">Full</string>
+    <string name="txt_9_16">9:16</string>
+    <string name="txt_3_4">3:4</string>
+    <string name="txt_1_1">1:1</string>
+
+
+    <string-array name="watermarkPosition">
+        <item>Watermark Position</item>
+        <item>Top-Left</item>
+        <item>Top-Right</item>
+        <item>Bottom-Left</item>
+        <item>Bottom-right</item>
+    </string-array>
+    <string-array name="descriptionPosition">
+        <item>Text Overlay Position</item>
+        <item>Top-Left</item>
+        <item>Top-Right</item>
+        <item>Bottom-Left</item>
+        <item>Bottom-right</item>
+    </string-array>
+
+    <string-array name="aspectRatio">
+        <item>Aspect Ratio</item>
+        <item>Full</item>
+        <item>9:16</item>
+        <item>3:4</item>
+        <item>1:1</item>
+    </string-array>
+
+    <string-array name="cameraType">
+        <item>Camera Type</item>
+        <item>Photo</item>
+        <item>Video</item>
+    </string-array>
+</resources>

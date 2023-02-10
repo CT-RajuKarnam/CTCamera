@@ -4,15 +4,245 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/black"
+    tools:context=".CameraActivity">
+    <!--app:layout_constraintDimensionRatio="1:1"-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cam_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <com.ct.ctcamera.CameraView
+            android:id="@+id/camera_testing"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:foregroundGravity="center"
+            android:keepScreenOn="true"
+            app:cameraAudio="on"
+            app:cameraAutoFocusMarker="@string/cameraview_default_autofocus_marker"
+            app:cameraEngine="camera2"
+            app:cameraExperimental="true"
+            app:cameraFacing="back"
+            app:cameraFlash="on"
+            app:cameraGestureLongTap="none"
+            app:cameraGesturePinch="zoom"
+            app:cameraGestureScrollHorizontal="filterControl1"
+            app:cameraGestureScrollVertical="exposureCorrection"
+            app:cameraGestureTap="none"
+            app:cameraGrid="off"
+            app:cameraMode="picture"
+            app:cameraPlaySounds="true"
+            app:cameraPreview="glSurface"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <FrameLayout
+                android:id="@+id/fl_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:layout_drawOnPictureSnapshot="true"
+                app:layout_drawOnPreview="true"
+                app:layout_drawOnVideoSnapshot="true">
+
+
+                <ImageView
+                    android:id="@+id/watermark_logo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="top|right"
+                    android:layout_margin="10dp"
+                    android:src="@mipmap/adroit_watermark" />
+
+
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/txtTimeStamp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text=""
+                    android:padding="10dp"
+                    android:textColor="@android:color/holo_red_dark" />
+
+
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_view_hide"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+
+                app:layout_drawOnPictureSnapshot="false"
+                app:layout_drawOnPreview="true"
+                app:layout_drawOnVideoSnapshot="true">
+
+                <ImageView
+                    android:id="@+id/img_overlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter" />
+
+                <TextView
+                    android:id="@+id/txt_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="Title"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+
+        </com.ct.ctcamera.CameraView>
+
+        <ImageView
+            android:id="@+id/fab_front"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_convert_3208"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/fab_picture"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fab_picture" />
+
+        <ImageView
+            android:id="@+id/fabSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_settings"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/fab_front"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fab_picture" />
+
+        <ImageView
+            android:id="@+id/fab_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_capture_64"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_flash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_flash_off_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/fab_picture"
+            app:layout_constraintStart_toEndOf="@+id/fab_picture"
+            app:layout_constraintTop_toTopOf="@+id/fab_picture" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_videocam_black_24dp"
+            android:visibility="gone"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:id="@+id/CL_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_save_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_save_black_24dp"
+            android:visibility="gone"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_retake_picture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/gray"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_retake_camera_img"
+                android:drawablePadding="5dp"
+                android:text="Retake"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_next_picture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/red"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_save_file"
+                android:drawablePadding="5dp"
+                android:text="Save &amp; Next"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/fab_close_picture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:background="@color/gray"
+                android:drawableLeft="@drawable/ic_save_file"
+                android:drawablePadding="5dp"
+                android:text="Save &amp; Close"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
