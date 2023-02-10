@@ -38,7 +38,7 @@ public class Pref {
     }
 
     public boolean getCamShowWaterMark() {
-        return pref.getBoolean("camShowWaterMark", true);
+        return pref.getBoolean("camShowWaterMark", false);
     }
 
     public void setCamShowAddress(boolean value) {
@@ -65,7 +65,7 @@ public class Pref {
     }
 
     public boolean getCamShowTime() {
-        return pref.getBoolean("camShowTime", true);
+        return pref.getBoolean("camShowTime", false);
     }
 
     public void setCamShowLabelName(boolean value) {
@@ -185,7 +185,7 @@ public class Pref {
         return pref.getString("descValue", "");
     }
 
-  public void setCamShowTextAt(String value) {
+    public void setCamShowTextAt(String value) {
         editor.putString("camShowTextAt", value);
         editor.apply();
     }
