@@ -49,7 +49,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="bottom|right"
-            android:src="@mipmap/adroit_watermark"
+            android:src="@mipmap/ic_launcher"
             app:layout_drawOnPictureSnapshot="true"
             app:layout_drawOnPreview="true"
             app:layout_drawOnVideoSnapshot="true" />

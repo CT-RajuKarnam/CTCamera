@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">MultiCameraLibrary</string>
-
 
     <string name="cameraview_default_autofocus_marker">com.ct.camera.markers.DefaultAutoFocusMarker</string>
 
