@@ -1,5 +1,6 @@
 package com.ct.camera;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -304,6 +305,7 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
             public void run() {
                 txtTimeStamp.post(new Runnable() {
 
+                    @SuppressLint("SuspiciousIndentation")
                     public void run() {
                         if(txtTimeStamp!=null) {
 
