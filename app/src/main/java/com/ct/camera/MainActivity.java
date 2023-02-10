@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            JSONObject jObj = new JSONObject(loadJSONFromAsset());
+            JSONObject main = new JSONObject(loadJSONFromAsset());
+            JSONObject  jObj = main.getJSONObject("CamSettings");
             Pref.getIn(this).setCamAspectRatio(jObj.getString("camAspectRatio"));
             Pref.getIn(this).setCamShowLabelName(jObj.getBoolean("camShowLabelName"));
             Pref.getIn(this).setCamShowOverlayImg(jObj.getBoolean("camShowOverlayImg"));
