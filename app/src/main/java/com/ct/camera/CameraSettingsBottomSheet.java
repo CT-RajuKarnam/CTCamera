@@ -22,7 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class CameraSettingsBottomSheet extends BottomSheetDialogFragment {
 
-    SwitchCompat swWatermark, swAddress, swLatLng, swTime, swTextOverlay, swGuideBox, swLabel, swHelper;
+    SwitchCompat swWatermark, swAddress, swLatLng, swTime,  swGuideBox, swLabel, swHelper;
     AppCompatSpinner spWatermarkPosition, spAspectRatio, spTextAt;
     AppCompatButton btnApply, btnReset;
     AppCompatImageView imgCloseDialog;
@@ -56,7 +56,6 @@ public class CameraSettingsBottomSheet extends BottomSheetDialogFragment {
         swAddress = v.findViewById(R.id.swAddress);
         swLatLng = v.findViewById(R.id.swLatLng);
         swTime = v.findViewById(R.id.swTime);
-        swTextOverlay = v.findViewById(R.id.swTextOverlay);
         swGuideBox = v.findViewById(R.id.swGuideBox);
         spWatermarkPosition = v.findViewById(R.id.spWatermarkPosition);
         spAspectRatio = v.findViewById(R.id.spAspectRatio);
@@ -82,7 +81,6 @@ public class CameraSettingsBottomSheet extends BottomSheetDialogFragment {
         swAddress.setChecked(Pref.getIn(requireContext()).getCamShowAddress());
         swLatLng.setChecked(Pref.getIn(requireContext()).getCamShowLatLng());
         swTime.setChecked(Pref.getIn(requireContext()).getCamShowTime());
-        swTextOverlay.setChecked(Pref.getIn(requireContext()).getCamShowOverlayImg());
         swGuideBox.setChecked(Pref.getIn(requireContext()).getCamShowGuideBox());
         swLabel.setChecked(Pref.getIn(requireContext()).getCamShowImageLabel());
         swHelper.setChecked(Pref.getIn(requireContext()).getCamShowOverlayImg());
@@ -119,29 +117,29 @@ public class CameraSettingsBottomSheet extends BottomSheetDialogFragment {
         swAddress.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 Pref.getIn(requireContext()).setCamShowAddress(true);
-                swTextOverlay.setChecked(true);
+                //swTextOverlay.setChecked(true);
             } else {
                 Pref.getIn(requireContext()).setCamShowAddress(false);
-                swTextOverlay.setChecked(false);
+                //swTextOverlay.setChecked(false);
             }
 
         });
         swLatLng.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 Pref.getIn(requireContext()).setCamShowLatLng(true);
-                swTextOverlay.setChecked(true);
+                //swTextOverlay.setChecked(true);
             } else {
                 Pref.getIn(requireContext()).setCamShowLatLng(false);
-                swTextOverlay.setChecked(false);
+                //swTextOverlay.setChecked(false);
             }
         });
         swTime.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 Pref.getIn(requireContext()).setCamShowTime(true);
-                swTextOverlay.setChecked(true);
+                //swTextOverlay.setChecked(true);
             } else {
                 Pref.getIn(requireContext()).setCamShowTime(false);
-                swTextOverlay.setChecked(false);
+                //swTextOverlay.setChecked(false);
             }
         });
 

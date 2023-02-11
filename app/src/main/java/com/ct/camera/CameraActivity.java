@@ -371,11 +371,11 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
 
                             String desc = "";
 
-                            if(Pref.getIn(CameraActivity.this).getCamShowTime()){
+                            /*if(Pref.getIn(CameraActivity.this).getCamShowTime()){
                                 //desc = desc + DateFormat.format("dd-MM-yyyy HH:mm:ss", new Date()).toString();
-                                if(Pref.getIn(CameraActivity.this).getCamShowLatLng()){
+                                //if(Pref.getIn(CameraActivity.this).getCamShowLatLng()){
                                     desc = desc + "\n"+DateFormat.format("dd-MM-yyyy HH:mm:ss", new Date()).toString();
-                                }
+                                //}
 
                                 if(Pref.getIn(CameraActivity.this).getCamShowLatLng()){
                                     if(appLocationService.getLocation()!=null)
@@ -390,7 +390,26 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
                                         throw new RuntimeException(e);
                                     }
                                 }
+                            }*/
+
+                            if(Pref.getIn(CameraActivity.this).getCamShowTime()) {
+                                desc = desc + "\n" + DateFormat.format("dd-MM-yyyy HH:mm:ss", new Date()).toString();
                             }
+
+                            if(Pref.getIn(CameraActivity.this).getCamShowLatLng()){
+                                if(appLocationService.getLocation()!=null)
+                                    desc = desc + "\nLat: " + twoDecimalForm.format(appLocationService.getLatitude())+", Lng:"+twoDecimalForm.format(appLocationService.getLongitude());
+                            }
+
+                            if(Pref.getIn(CameraActivity.this).getCamShowAddress()){
+                                try {
+                                    if(appLocationService.getLocation()!=null)
+                                        desc = desc + "\nAddress: " + appLocationService.getAddress();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+
 
 
                             txtTimeStamp.setText(desc);
@@ -608,7 +627,7 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
         }
 
 
-        if (Pref.getIn(CameraActivity.this).getCamShowTime()) {
+        if (Pref.getIn(CameraActivity.this).getCamShowTime() || Pref.getIn(CameraActivity.this).getCamShowAddress() || Pref.getIn(CameraActivity.this).getCamShowLatLng()) {
             txtTimeStamp.setVisibility(View.VISIBLE);
             txtTimeStamp.setGravity(Pref.getIn(CameraActivity.this).getCamDescPosition());
         } else {
@@ -645,7 +664,7 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
         }
 
         /*image controls*/
-        if (arlImages.get(position).getImgOverlayLogo() != "") {
+        if (arlImages.get(position).getImgOverlayLogo() != "" && Pref.getIn(CameraActivity.this).getCamShowOverlayImg()) {
             img_overlay.setVisibility(View.VISIBLE);
             Glide.with(CameraActivity.this)
                     .load(arlImages.get(position).getImgOverlayLogo()) // resizes the image to these dimensions (in pixel). resize does not respect aspect ratio
@@ -654,7 +673,8 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
             img_overlay.setVisibility(View.GONE);
         }
 
-        if (arlImages.get(position).getImgName() != "") {
+
+        if (arlImages.get(position).getImgName() != "" && Pref.getIn(CameraActivity.this).getCamShowImageLabel()) {
             txt_title.setVisibility(View.VISIBLE);
             txt_title.setText(arlImages.get(position).getImgName());
         } else {

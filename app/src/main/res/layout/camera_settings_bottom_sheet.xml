@@ -170,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.SwitchCompat
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/swTextOverlay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
