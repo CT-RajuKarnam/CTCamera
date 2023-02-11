@@ -242,19 +242,19 @@ public class CameraSettingsBottomSheet extends BottomSheetDialogFragment {
                 if (position > 0) {
                     if (descPosition[position].equalsIgnoreCase("Top-Left")) {
                         Pref.getIn(requireContext()).setCamDescPosition(Gravity.TOP | Gravity.LEFT);
-                        Pref.getIn(requireContext()).setCamShowTextAt("Top-Left");
+                        Pref.getIn(requireContext()).setCamDescValue("Top-Left");
                     } else if (descPosition[position].equalsIgnoreCase("Top-Right")) {
                         Pref.getIn(requireContext()).setCamDescPosition(Gravity.TOP | Gravity.RIGHT);
-                        Pref.getIn(requireContext()).setCamShowTextAt("Top-Right");
+                        Pref.getIn(requireContext()).setCamDescValue("Top-Right");
                     } else if (descPosition[position].equalsIgnoreCase("Bottom-Left")) {
                         Pref.getIn(requireContext()).setCamDescPosition(Gravity.BOTTOM | Gravity.LEFT);
-                        Pref.getIn(requireContext()).setCamShowTextAt("Bottom-Left");
+                        Pref.getIn(requireContext()).setCamDescValue("Bottom-Left");
                     } else if (descPosition[position].equalsIgnoreCase("Bottom-right")) {
                         Pref.getIn(requireContext()).setCamDescPosition(Gravity.BOTTOM | Gravity.RIGHT);
-                        Pref.getIn(requireContext()).setCamShowTextAt("Bottom-right");
+                        Pref.getIn(requireContext()).setCamDescValue("Bottom-right");
                     } else {
                         Pref.getIn(requireContext()).setCamDescPosition(0);
-                        Pref.getIn(requireContext()).setCamShowTextAt("Top-Left");
+                        Pref.getIn(requireContext()).setCamDescValue("Top-Left");
                     }
                 }
             }
