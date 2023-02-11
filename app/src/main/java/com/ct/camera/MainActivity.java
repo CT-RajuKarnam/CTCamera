@@ -1,20 +1,24 @@
 package com.ct.camera;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -25,7 +29,6 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,9 +66,19 @@ public class MainActivity extends AppCompatActivity {
             checkcamera();
         }
 
+
+
+        requestLocationPermission();
+    }
+
+    private void checkcamera() {
+
+
+        JSONObject object = null;
         try {
-            JSONObject main = new JSONObject(loadJSONFromAsset());
-            JSONObject  jObj = main.getJSONObject("CamSettings");
+            object = new JSONObject(loadJSONFromAsset());
+            JSONArray images = object.getJSONArray("CamImages");
+            JSONObject jObj = object.getJSONObject("CamSettings");
             Pref.getIn(this).setCamAspectRatio(jObj.getString("camAspectRatio"));
             Pref.getIn(this).setCamShowLabelName(jObj.getBoolean("camShowLabelName"));
             Pref.getIn(this).setCamShowOverlayImg(jObj.getBoolean("camShowOverlayImg"));
@@ -76,20 +89,6 @@ public class MainActivity extends AppCompatActivity {
             Pref.getIn(this).setCamShowTime(jObj.getBoolean("camShowTime"));
             Pref.getIn(this).setCamShowTextAt(jObj.getString("camShowTextAt"));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    private void checkcamera() {
-
-
-        JSONObject object = null;
-        try {
-            object = new JSONObject(loadJSONFromAsset());
-            JSONArray images = object.getJSONArray("CamImages");
             arlImages.clear();
             for (int i = 0; i < images.length(); i++) {
                 JSONObject rec = images.getJSONObject(i);
@@ -200,11 +199,42 @@ public class MainActivity extends AppCompatActivity {
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-            json = new String(buffer, StandardCharsets.UTF_8);
+            json = new String(buffer, "UTF-8");
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
         return json;
+    }
+
+    private static final int PERMISSION_REQUEST_LOCATION = 100;
+
+    private void requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Show explanation to the user why we need the permission
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        PERMISSION_REQUEST_LOCATION);
+            }
+        } else {
+            // Permission has already been granted
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission is granted
+            } else {
+                // Permission is denied
+            }
+        }
     }
 }

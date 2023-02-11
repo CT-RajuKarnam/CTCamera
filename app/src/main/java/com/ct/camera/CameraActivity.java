@@ -1,17 +1,24 @@
 package com.ct.camera;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.hardware.SensorManager;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -37,6 +44,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -93,6 +101,11 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
     @BindView(R.id.btn_next_picture)
     AppCompatTextView btn_next_picture;
 
+    @BindView(R.id.CL_preview)
+    ConstraintLayout CL_preview;
+
+
+
     int position = 0;
     private ArrayList<ImageTags> arlImages;
     private float animation_flip = 180f;
@@ -106,6 +119,7 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
     FrameLayout.LayoutParams fl_params, fl_hide_params;
     private static WeakReference<PictureResult> image;
     DecimalFormat twoDecimalForm = new DecimalFormat("#.######");
+    boolean orientation_flag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +141,16 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
         camera_testing.setVideoMaxDuration(120 * 1000); // max 2mins
         camFlash();
 
+        /*if (arlImages.get(position).getImgOrientation().equals("P")) {
+            orientation_flag = false;
+            Pref.getIn(CameraActivity.this).setCamAspectRatio("3:4");
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            orientation_flag = true;
+            Pref.getIn(CameraActivity.this).setCamAspectRatio("4:3");
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        Pref.getIn(CameraActivity.this).saveOrientationFlag(orientation_flag);*/
 
 
 
@@ -139,19 +163,45 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
             public void onPictureTaken(@NonNull PictureResult im) {
 
 
+                /*PicturePreviewActivity.setPictureResult(im);
+                Intent intent = new Intent(CameraActivity.this, PicturePreviewActivity.class);
+                Bundle bundleObject = new Bundle();
+                bundleObject.putInt("pos", position);
+                bundleObject.putSerializable("data", (Serializable) arlImages);
+                intent.putExtras(bundleObject);
+                startActivity(intent);
+                finish();*/
+
                 image = im != null ? new WeakReference<>(im) : null;
 
 
                 if (image == null) {
                     findViewById(R.id.cam_view).setVisibility(View.VISIBLE);
                     findViewById(R.id.CL_preview).setVisibility(View.GONE);
+                    findViewById(R.id.image).setVisibility(View.GONE);
                 } else {
                     findViewById(R.id.cam_view).setVisibility(View.GONE);
                     findViewById(R.id.CL_preview).setVisibility(View.VISIBLE);
+                    findViewById(R.id.image).setVisibility(View.VISIBLE);
 
                     im.toBitmap(2000, 2000, new BitmapCallback() {
                         @Override
                         public void onBitmapReady(Bitmap bitmap) {
+
+
+                            /*Bitmap bitmapNew = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                            Canvas canvas = new Canvas(bitmapNew);
+                            //Canvas canvas1 = new Canvas(bitmapNew);
+                            canvas.drawARGB(0, 0, 0, 0);
+                            //fl_view.setRotation(90);
+                            fl_view.setDrawingCacheEnabled(true);
+                            fl_view.measure(
+                                    View.MeasureSpec.makeMeasureSpec(canvas.getWidth(), View.MeasureSpec.EXACTLY),
+                                    View.MeasureSpec.makeMeasureSpec(canvas.getHeight(), View.MeasureSpec.EXACTLY));
+                            fl_view.layout(0,0,fl_view.getMeasuredWidth(),fl_view.getMeasuredHeight());
+
+                            fl_view.draw(canvas);*/
+
                             if (camera_testing.getOrientation() % 180 != 0) {
                                 bitmap = rotateBitmap(bitmap, ((camera_testing.getOrientation()-180f)));
                             }
@@ -171,6 +221,7 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
                     public void onClick(View v) {
                         findViewById(R.id.cam_view).setVisibility(View.VISIBLE);
                         findViewById(R.id.CL_preview).setVisibility(View.GONE);
+                        findViewById(R.id.image).setVisibility(View.GONE);
                     }
                 });
 
@@ -190,19 +241,25 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
                         if (!directory.exists()) {
                             directory.mkdir();
                         }
-                        File saveTo = new File(directory, filename + ".jpg");
 
-                        image.get().toFile(saveTo, file -> {
-                            if (file != null) {
-                                image = null;
-                                //Toast.makeText(CameraActivity.this, "Picture saved to " + file.getPath(), Toast.LENGTH_LONG).show();
-                                arlImages.get(position).setImgPath(file.getPath());
-                                position++;
-                                findViewById(R.id.cam_view).setVisibility(View.VISIBLE);
-                                findViewById(R.id.CL_preview).setVisibility(View.GONE);
-                                applyListener();
-                            }
-                        });
+                        try {
+                            File saveTo = new File(directory, filename + ".jpg");
+
+                            image.get().toFile(saveTo, file -> {
+                                if (file != null) {
+                                    image = null;
+                                    //Toast.makeText(CameraActivity.this, "Picture saved to " + file.getPath(), Toast.LENGTH_LONG).show();
+                                    arlImages.get(position).setImgPath(file.getPath());
+                                    position++;
+                                    findViewById(R.id.cam_view).setVisibility(View.VISIBLE);
+                                    findViewById(R.id.CL_preview).setVisibility(View.GONE);
+                                    findViewById(R.id.image).setVisibility(View.GONE);
+                                    applyListener();
+                                }
+                            });
+                        }catch (Exception e){
+                            Log.e("Exception",e.getMessage());
+                        }
 
                     }
                 });
@@ -224,30 +281,33 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
                             if (!directory.exists()) {
                                 directory.mkdir();
                             }
-                            File saveTo = new File(directory, filename + ".jpg");
-                            if(image!=null) {
-                                image.get().toFile(saveTo, file -> {
-                                    if (file != null) {
-                                        image = null;
-                                        //Toast.makeText(CameraActivity.this, "Picture saved to " + file.getPath(), Toast.LENGTH_LONG).show();
-                                        arlImages.get(position).setImgPath(file.getPath());
-                                        Intent intent = new Intent(CameraActivity.this, MainActivity.class);
-                                        Bundle bundleObject = new Bundle();
-                                        bundleObject.putSerializable("data", arlImages);
-                                        bundleObject.putInt("pos", position);
-                                        bundleObject.putString("lan", "lan");
-                                        bundleObject.putString("from", "from");
-                                        intent.putExtras(bundleObject);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                });
+                            try {
+                                File saveTo = new File(directory, filename + ".jpg");
+                                if (image != null) {
+                                    image.get().toFile(saveTo, file -> {
+                                        if (file != null) {
+                                            image = null;
+                                            //Toast.makeText(CameraActivity.this, "Picture saved to " + file.getPath(), Toast.LENGTH_LONG).show();
+                                            arlImages.get(position).setImgPath(file.getPath());
+                                            Intent intent = new Intent(CameraActivity.this, MainActivity.class);
+                                            Bundle bundleObject = new Bundle();
+                                            bundleObject.putSerializable("data", arlImages);
+                                            bundleObject.putInt("pos", position);
+                                            bundleObject.putString("lan", "lan");
+                                            bundleObject.putString("from", "from");
+                                            intent.putExtras(bundleObject);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
+                                }
+                            }catch (Exception e){
+                                Log.e("Exception",e.getMessage());
                             }
                         }
 
                     }
                 });
-
 
             }
 
@@ -305,7 +365,6 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
             public void run() {
                 txtTimeStamp.post(new Runnable() {
 
-                    @SuppressLint("SuspiciousIndentation")
                     public void run() {
                         if(txtTimeStamp!=null) {
 
@@ -320,13 +379,13 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
 
                                 if(Pref.getIn(CameraActivity.this).getCamShowLatLng()){
                                     if(appLocationService.getLocation()!=null)
-                                    desc = desc + "\nLat: " + twoDecimalForm.format(appLocationService.getLatitude())+", Lng:"+twoDecimalForm.format(appLocationService.getLongitude());
+                                        desc = desc + "\nLat: " + twoDecimalForm.format(appLocationService.getLatitude())+", Lng:"+twoDecimalForm.format(appLocationService.getLongitude());
                                 }
 
                                 if(Pref.getIn(CameraActivity.this).getCamShowAddress()){
                                     try {
                                         if(appLocationService.getLocation()!=null)
-                                        desc = desc + "\nAddress: " + appLocationService.getAddress();
+                                            desc = desc + "\nAddress: " + appLocationService.getAddress();
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
@@ -365,16 +424,92 @@ public class CameraActivity extends AppCompatActivity implements MyListener {
 
         fabVideo.setImageResource(R.drawable.ic_stop_black_24dp);
     }
-
+    private OrientationEventListener myOrientationEventListener = null;
+    private int angleToRotate, toastAngle;
+    private long mLastClickTime = 0;
+    boolean shutter_flag = false;
     @OnClick(R.id.fab_picture)
     void capturePictureSnapshot() {
         if (camera_testing.isTakingVideo()) {
             Toast.makeText(this, "Already taking video.", Toast.LENGTH_SHORT).show();
             return;
         }
-        camera_testing.takePictureSnapshot();
+
+
+
+        int angle = camera_testing.getOrientation();
+        if(arlImages.get(position).getImgOrientation().equals("L")){
+            shutter_flag = angle >= 240 && angle <= 300;
+        }else {
+            shutter_flag = (angle >= 0 && angle <= 30) || (angle >= 330 && angle <= 360);
+        }
+
+        if (shutter_flag) {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            try {
+                System.gc();
+                camera_testing.takePictureSnapshot();
+                //camera_testing.takePicture();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (arlImages.get(position).getImgOrientation().equals("L")) {
+                showToast("Please capture photo in landscape only", toastAngle);
+            } else {
+                showToast("Please capture photo in portrait only", toastAngle);
+            }
+        }
         //camera_testing.takePicture();
     }
+
+    private Toast showToast(String message, final int toastAngle) {
+        Toast clear_toast = null;
+        class RotatedTextView extends View {
+            private String text = "";
+            private Paint paint = new Paint();
+            private Rect bounds = new Rect();
+            public RotatedTextView(String text, Context context) {
+                super(context);
+                this.text = text;
+            }
+            @Override
+            protected void onDraw(Canvas canvas) {
+                final float scale = getResources().getDisplayMetrics().density;
+                paint.setTextSize(14 * scale + 0.5f); // convert dps to pixels
+                paint.setStyle(Paint.Style.FILL);
+                paint.setColor(Color.rgb(75, 75, 75));
+                paint.setShadowLayer(1, 0, 1, Color.BLACK);
+                paint.getTextBounds(text, 0, text.length(), bounds);
+                /*if( MyDebug.LOG ) {
+                    Log.d(TAG, "bounds: " + bounds);
+				}*/
+                final int padding = (int) (14 * scale + 0.5f); // convert dps to pixels
+                final int offset_y = (int) (32 * scale + 0.5f); // convert dps to pixels
+                canvas.save();
+                canvas.rotate(toastAngle, canvas.getWidth() / 2, canvas.getHeight() / 2);
+                canvas.drawRect(canvas.getWidth() / 2 - bounds.width() / 2 + bounds.left - padding,
+                        canvas.getHeight() / 2 + bounds.top - padding + offset_y,
+                        canvas.getWidth() / 2 - bounds.width() / 2 + bounds.right + padding,
+                        canvas.getHeight() / 2 + bounds.bottom + padding + offset_y, paint);
+                paint.setColor(Color.WHITE);
+                canvas.drawText(text, canvas.getWidth() / 2 - bounds.width() / 2, canvas.getHeight() / 2 + offset_y, paint);
+                canvas.restore();
+            }
+        }
+        if (clear_toast != null)
+            clear_toast.cancel();
+        clear_toast = new Toast(CameraActivity.this);
+        View text = new RotatedTextView(message, CameraActivity.this);
+        clear_toast.setView(text);
+        clear_toast.setDuration(Toast.LENGTH_SHORT);
+        clear_toast.show();
+        return clear_toast;
+    }
+
 
     @OnClick(R.id.fab_front)
     void toggleCamera() {

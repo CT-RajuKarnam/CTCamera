@@ -6,6 +6,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -16,10 +17,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ct.ctcamera.BitmapCallback;
 import com.ct.ctcamera.PictureResult;
 import com.ct.ctcamera.size.AspectRatio;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.Serializable;

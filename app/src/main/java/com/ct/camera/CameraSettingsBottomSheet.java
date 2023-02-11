@@ -18,7 +18,6 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class CameraSettingsBottomSheet extends BottomSheetDialogFragment {
@@ -116,25 +115,14 @@ public class CameraSettingsBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
 
-        swWatermark.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                Pref.getIn(requireContext()).setCamShowWaterMark(true);
-                spWatermarkPosition.setSelection(1, true);
-            } else {
-                Pref.getIn(requireContext()).setCamShowWaterMark(false);
-                spWatermarkPosition.setSelection(0, true);
-            }
-        });
+        swWatermark.setOnCheckedChangeListener((compoundButton, b) -> Pref.getIn(requireContext()).setCamShowWaterMark(b));
         swAddress.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 Pref.getIn(requireContext()).setCamShowAddress(true);
                 swTextOverlay.setChecked(true);
             } else {
                 Pref.getIn(requireContext()).setCamShowAddress(false);
-                if (!Pref.getIn(requireContext()).getCamShowTime() && !Pref.getIn(requireContext()).getCamShowLatLng()
-                ) {
-                    swTextOverlay.setChecked(false);
-                }
+                swTextOverlay.setChecked(false);
             }
 
         });
@@ -144,10 +132,7 @@ public class CameraSettingsBottomSheet extends BottomSheetDialogFragment {
                 swTextOverlay.setChecked(true);
             } else {
                 Pref.getIn(requireContext()).setCamShowLatLng(false);
-                if (!Pref.getIn(requireContext()).getCamShowAddress() && !Pref.getIn(requireContext()).getCamShowTime()
-                ) {
-                    swTextOverlay.setChecked(false);
-                }
+                swTextOverlay.setChecked(false);
             }
         });
         swTime.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -156,22 +141,21 @@ public class CameraSettingsBottomSheet extends BottomSheetDialogFragment {
                 swTextOverlay.setChecked(true);
             } else {
                 Pref.getIn(requireContext()).setCamShowTime(false);
-                if (!Pref.getIn(requireContext()).getCamShowAddress() && !Pref.getIn(requireContext()).getCamShowLatLng()
-                ) {
-                    swTextOverlay.setChecked(false);
-                }
+                swTextOverlay.setChecked(false);
             }
         });
 
-        swTextOverlay.setChecked(Pref.getIn(requireContext()).getCamShowAddress() || Pref.getIn(requireContext()).getCamShowLatLng() || Pref.getIn(requireContext()).getCamShowTime());
-        swTextOverlay.setOnCheckedChangeListener((compoundButton, b) -> {
+        /*if(!Pref.getIn(requireContext()).getCamShowName()){
+            Pref.getIn(requireContext()).setCamDescValue("Label Position");
+        }*/
+        /*swTextOverlay.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                spTextAt.setSelection(1,true);
+                Pref.getIn(requireContext()).setCamShowOverlayImg(true);
             } else {
-                spTextAt.setSelection(0,true);
+                Pref.getIn(requireContext()).setCamShowOverlayImg(false);
+                spDescPosition.setSelection(0);
             }
-        });
-
+        });*/
         swGuideBox.setOnCheckedChangeListener((compoundButton, b) -> Pref.getIn(requireContext()).setCamShowGuideBox(b));
         swLabel.setOnCheckedChangeListener((compoundButton, b) -> Pref.getIn(requireContext()).setCamShowImageLabel(b));
         swHelper.setOnCheckedChangeListener((compoundButton, b) -> Pref.getIn(requireContext()).setCamShowOverlayImg(b));
